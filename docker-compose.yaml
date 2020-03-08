@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app:ro
+    user: 10000:10000
+    environment:
+      DB_SERVER: db
+      DB_USER:
+      DB_PASSWORD:
+      DB_NAME:
+      API_KEY:
+    depends_on:
+      - db
+  db:
+    image: postgres
+    volumes:
+    - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME:-some_stuff}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+volumes:
+  data:

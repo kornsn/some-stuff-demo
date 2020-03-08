@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    user: ${CURRENT_UID}
+    environment:
+      DB_SERVER: db
+      DB_USER:
+      DB_PASSWORD:
+      DB_NAME:
+      API_KEY:
+    depends_on:
+      - db
+    command: pytest -vv
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: test_${DB_NAME:-some_stuff}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
